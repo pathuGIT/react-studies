@@ -1,0 +1,16 @@
+{
+    "blogs":[
+        {
+                "title": "Blog 1",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                "author": "John Doe",
+                "id": 1
+        },
+        {
+                "title": "Blog 2",
+                "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                "author": "Wane Doe",
+                "id": 2
+        }
+    ]
+}
