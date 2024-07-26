@@ -198,3 +198,33 @@ const Home = () => {
     );
 }
 ```
+
+### Fetching Data with useEffect
+
+```js
+//db.json
+............
+
+//Home js
+const Home = () => {
+    const [blogs, setBlogs] = useState(null)
+
+    useEffect(()=>{
+        console.log('use effect ran');
+        fetch('http://localhost:8000/blogs')
+        .then(res=>{
+            return res.json();
+        })
+        .then(data=>{
+            setBlogs(data);
+        })
+    },[])
+
+    return ( 
+        <div class="home">
+            <h2>Home wojo</h2>
+            {blogs && <BlogList blogss={blogs} />}
+        </div>
+    );
+}
+```
