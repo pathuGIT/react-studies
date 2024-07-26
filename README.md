@@ -228,3 +228,75 @@ const Home = () => {
     );
 }
 ```
+
+### Conditional Loading Message
+
+```js
+const Home = () => {
+    const [blogs, setBlogs] = useState(null)
+    const [isPending, setIsPending] = useState(true)
+
+    useEffect(()=>{
+        setTimeout(()=>{
+            console.log('use effect ran');
+            fetch('http://localhost:8000/blogs')
+            .then(res=>{
+                return res.json();
+            })
+            .then(data=>{
+                setBlogs(data);
+                setIsPending(false);
+            })
+        },1000)
+    },[])
+
+    return ( 
+        <div class="home">
+            {isPending && <div>Loading...</div>}
+            {blogs && <BlogList blogss={blogs}/>}
+        </div>
+    );
+}
+
+```
+
+### handelling Fetch Error
+
+```js
+const Home = () => {
+    const [blogs, setBlogs] = useState(null)
+    const [isPending, setIsPending] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(()=>{
+        setTimeout(()=>{
+            console.log('use effect ran');
+            fetch('http://localhost:8000/blogs')
+
+            .then(res=>{
+                if(!res.ok){
+                    throw Error('Err: could not fetch the data for that resource');
+                }    
+                return res.json();
+            })
+            .then(data=>{
+                setBlogs(data);
+                setIsPending(false);
+                setError(null);
+            })
+            .catch(err =>{
+                setError(err.message);
+                setIsPending(false);
+            })
+        },1000)
+    },[])
+
+    return ( 
+        <div class="home">
+            {error && <div>{error}</div>}
+            {isPending && <div>Loading...</div>}
+            {blogs && <BlogList blogss={blogs}/>}
+        </div>
+    );
+}
+```
