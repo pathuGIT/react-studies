@@ -49,3 +49,53 @@ const Home = () => {
  
 export default Home;
 ```
+
+### Props
+
+```js
+//Home Page
+const Home = () => {
+    const [blogs, setBlogs] = useState([
+        {title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1},
+        {title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2},
+        {title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3}
+    ])
+
+    return ( 
+        <div class="home">
+            <BlogList blogss={blogs}/>
+        </div>
+    );
+}
+
+// BlogList Page
+const BlogList = (props) => {
+
+    const blogs = props.blogss;
+
+    return ( 
+        <div class="blog-list">
+            {blogs.map((blog) => (
+                <div class="blog-preview" key={blog.id}>
+                    <h3>{blog.title}</h3>
+                    <p>Written by {blog.author}</p>
+                </div>
+            ))}
+        </div>
+    );
+}
+ 
+export default BlogList;
+```
+
+### Resuing Component
+
+```js
+//Home Page
+//same as above
+            <BlogList blogss={blogs.filter((e) => e.author === 'mario' && e.id === 1)}/> 
+//same as above
+}
+ 
+export default Home;
+```
