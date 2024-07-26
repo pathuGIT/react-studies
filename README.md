@@ -179,3 +179,22 @@ const BlogList = ({blogss,handleDelete}) => {
     );
 }
 ```
+
+### use Effect
+
+```js
+const Home = () => {
+    const [name, setName] = useState('mario');
+
+      useEffect(()=>{
+        console.log('use effect ran');
+        console.log(name);
+      },[name])
+
+    return ( 
+        <div class="home">
+            <button onClick={()=> setName('naml')}>effect</button>
+        </div>
+    );
+}
+```
