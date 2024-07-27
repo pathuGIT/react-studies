@@ -358,3 +358,250 @@ const useFetch = (url) => {
  
 export default useFetch;
 ```
+
+### React Router
+
+```js
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <Navbar />
+        <div className="content">
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/create">
+              <Create />
+            </Route>
+          </Switch>
+        </div>
+      </div>
+    </Router>
+  );
+}
+export default App;
+
+```
+
+### Routes Params
+
+```js
+// App.js
+import BlogDetails from './BlogDetails';
+
+function App() {
+........
+          <Switch>
+            <Route path="/blog/:id">
+              <BlogDetails />
+            </Route>
+          </Switch>
+........
+  );
+}
+```
+
+```js
+// BlogDetails.js
+
+const BlogDetails = () => {
+    const {id} = useParams();
+
+    return (
+        <div class="blog-deatil">
+            <h1>Blog Detail: {id}</h1>
+        </div>
+    );
+}
+ 
+export default BlogDetails;
+```
+
+### Reusing Custom Hook
+
+```js
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+const BlogDetails = () => {
+    const {id} = useParams();
+    const {blogs, isPending, error} = useFetch('http://localhost:8000/blogs/' + id);
+
+    return (
+        <div class="blog-details">
+            {error && <div>{error}</div>}
+            {isPending && <div>Loading...</div>}
+            {
+                blogs && <article>
+                    <h2>{blogs.title}</h2>
+                    <p>Written by {blogs.author}</p>
+                    <div>{blogs.body}</div>
+                </article>
+            }
+        </div>
+    );
+}
+```
+
+### Forms Submit Event
+
+```js
+const Create = () => {
+    const [title, setTitle] = useState('');
+    const [body, setBody] = useState('');
+    const [author, setAuthor] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const blog = {title, body, author};
+        console.log(blog);
+    }
+
+    return (
+        <div class="create">
+            <h1>Add New Blog</h1>
+            <form onSubmit={handleSubmit}>
+                <label>Blog Title:</label>
+                <input type="text" required value={title} onChange={(e)=>setTitle(e.target.value)}/>
+
+                <label>Blog Body:</label>
+                <textarea required value={body} onChange={(e)=>setBody(e.target.value)}></textarea>
+
+                <label>Blog Author:</label>
+                <select value={author} onChange={(e)=>setAuthor(e.target.value)}>
+                    <option value="mario">mario</option>
+                    <option value="yoshi">yoshi</option>
+                </select>
+
+                <button>Add Blog</button>    
+            </form>
+        </div>
+    );
+}
+```
+
+### Form POST Requets
+
+```js
+import { useState } from 'react';
+
+const Create = () => {
+    const [title, setTitle] = useState('');
+    const [body, setBody] = useState('');
+    const [author, setAuthor] = useState('Mario');
+    const [isPending, setIspending] = useState(false);
+
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const blog = {title, body, author};
+        setIspending(true);
+
+        setTimeout(() => {
+            fetch('http://localhost:8000/blogs', {
+                method: 'POST',
+                headers: {'content-type': 'application/json'},
+                body: JSON.stringify(blog)
+            }).then(()=>{
+                console.log('new blog added');
+                setIspending(false);
+            })
+        }, 1000);
+    }
+
+    return (
+        <div class="create">
+            <h1>Add New Blog</h1>
+            <form onSubmit={handleSubmit}>
+                //same above ................
+                {!isPending && <button>Add Blog</button> }   
+                {isPending && <button disabled>Adding Blog...</button> }   
+            </form>
+        </div>
+    );
+}
+ 
+export default Create;
+```
+
+### Redirects
+
+```js
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+
+const Create = () => {
+    const history = useHistory();
+    
+
+            }).then(()=>{
+                console.log('new blog added');
+                setIspending(false);
+                //history.go(-1);           -> go back
+                //history.push('/');        -> go forward
+            })
+
+```
+
+### Handle Delete
+
+```js
+import { useHistory } from "react-router-dom";
+
+const BlogDetails = () => {
+    const history = useHistory();
+
+    const handleDelete = () => {
+        fetch('http://localhost:8000/blogs/' + id, {
+            method: 'DELETE'
+        }).then(() => {
+            history.push('/'); // Redirect to home page
+        })
+    }
+
+    return (
+        <div class="blog-details">
+            .............
+            {
+                blogs && <article>
+                     ...........
+                    <button onClick={handleDelete}>Delete</button>
+                </article>
+            }
+        </div>
+    );
+}
+```
+
+### Not Found [404 Error]
+
+```js
+// NoFound.js
+
+import { Link } from 'react-router-dom';
+
+const NotFound = () => {
+    return (
+        <div class="not-found">
+            <p>That page cannot be found</p>
+            <Link to="/">Back to the homepage...</Link>
+        </div>
+    );
+}
+```
+
+```js
+// NotFound.js
+
+import NotFound from './NotFound';
+
+    .............
+
+            <Route path="*">
+              <NotFound />
+            </Route> 
+
+   ............     
+
+```
