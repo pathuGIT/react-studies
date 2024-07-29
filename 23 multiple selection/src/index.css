@@ -1,0 +1,17 @@
+.my-div{
+    height: 100vh;
+}
+.mybtn{
+    border: none;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+/* Style for placeholder text */
+::placeholder {
+    color: #888; /* Change the color to your preference */
+    font-style: italic; /* Optional: make the text italic */
+    opacity: 1; /* Ensure the placeholder text is fully opaque */
+    font-size: smaller;
+    padding: 2px;
+}
