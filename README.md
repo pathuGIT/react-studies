@@ -605,3 +605,27 @@ import NotFound from './NotFound';
    ............     
 
 ```
+
+
+### Updating a Specific Object in list
+
+```js
+const [users, setUsers] = useState([
+    { id: 1, name: 'Alice', age: 25, city: 'New York' },
+    { id: 2, name: 'Bob', age: 30, city: 'Los Angeles' },
+    { id: 3, name: 'Charlie', age: 28, city: 'Chicago' }
+]);
+```
+
+```js
+const updateUserCity = (id, newCity) => {
+    setUsers(prevUsers => 
+        prevUsers.map(user => 
+            user.id === id ? { ...user, city: newCity } : user
+        )
+    );
+};
+
+// Example usage:
+updateUserCity(2, 'San Francisco');
+```
