@@ -659,3 +659,74 @@ function App() {
 
 export default App;
 ```
+
+### useReducer 
+
+ - Handling complex state with useReducer
+```js
+import React, { useReducer } from 'react';
+
+function App() {
+  
+  const [number, setNumber] = useReducer(
+    (number, newNumber) => number+newNumber,0
+  )
+
+  return (
+    <div className='App'>
+      <p onClick={()=>setNumber(1)}>{number}</p>
+     </div> 
+  );
+}
+```
+
+
+- Refactoring useState to useReducer
+```js
+
+function App() {
+  
+  const [checked, toggle] = useReducer(
+    (checked) => !checked, false
+  )
+
+  return (
+    <div className='App'>
+      <input type="checkbox" value={checked} onChange={toggle}/>
+      {checked ?  'yes check' : 'no check'}
+     </div> 
+  );
+}
+
+export default App;
+```
+
+ - Dispatching actions with useReducer
+```js
+function App() {
+  
+  function reduser(state, action){
+    switch(action){
+      case 'xx':
+        return {count: state.count+1}
+      case 'yy':
+        return {count: state.count-1}  
+    }
+  }
+
+  const initialState = {
+    count: 0
+  }
+
+  const [state, dispatch] = useReducer(reduser, initialState)
+
+  return (
+    <div className='App'>
+      {state.count}
+      <button onClick={()=>dispatch('xx')}>+</button>
+      <button onClick={()=>dispatch('yy')}>-</button>
+    </div> 
+  );
+}
+
+```
