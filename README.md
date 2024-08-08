@@ -730,3 +730,25 @@ function App() {
 }
 
 ```
+### useRef
+
+```js
+function App() {
+  const sound = useRef();
+  
+  const change = (e)=>{
+    e.preventDefault()
+    console.log(sound.current.value)
+  }
+
+  return (
+    <div className='App'>
+      <form onSubmit={change}>
+        <input type="text" ref={sound}/>
+        <input type="submit" value="SEND" />
+      </form>
+    </div> 
+  );
+}
+
+```
