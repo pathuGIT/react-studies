@@ -629,3 +629,33 @@ const updateUserCity = (id, newCity) => {
 // Example usage:
 updateUserCity(2, 'San Francisco');
 ```
+
+### Fetch Json 
+
+```js
+import React, { useEffect, useState } from 'react';
+
+function App() {
+  
+  const [data, setData] = useState([]);
+
+  useEffect(()=>{
+    fetch(`https://api.github.com/users`)
+      .then((response) => response.json())
+      .then(setData);
+
+  },[])
+
+  return (
+    <div className='App'>
+      {
+        data.map((x)=>(
+          <li key={x.id}>{x.login}</li>
+        ))
+      }
+    </div>
+  );
+}
+
+export default App;
+```
